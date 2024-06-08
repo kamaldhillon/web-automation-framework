@@ -13,4 +13,9 @@ public class LoginPageFeature  extends InitPage{
       page.validateWindowHandles();
       page.navigateSuccess();
    }
+
+   public void checkBrokenUrl() throws IOException {
+      LoginPage page = new LoginPage();
+      page.validateBrokenUrl("https://www.amazon.com");
+   }
 }

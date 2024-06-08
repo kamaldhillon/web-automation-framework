@@ -39,6 +39,7 @@ public class InitTest {
                 case "chrome":
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + driverPath);
                     ChromeOptions options = new ChromeOptions();
+//                    options.setAcceptInsecureCerts(true);
                     driver = new ChromeDriver(options);
 //                    WebDriverManager.chromedriver().setup();
                     break;

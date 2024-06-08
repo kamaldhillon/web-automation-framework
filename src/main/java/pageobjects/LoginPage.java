@@ -3,9 +3,13 @@ package pageobjects;
 import initialzer.InitPage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 import utils.CustomAssert;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Set;
 
 public class LoginPage extends InitPage {
@@ -46,5 +50,12 @@ public class LoginPage extends InitPage {
     public void validateWindowHandles(){
         Set<String> set= getWindowHandles();
         set.forEach(e->System.out.println(e));
+    }
+
+    public void validateBrokenUrl(String url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        int statusCode =connection.getResponseCode();
+        Assert.assertEquals(statusCode,200,"status code is incorrect");
     }
 }
