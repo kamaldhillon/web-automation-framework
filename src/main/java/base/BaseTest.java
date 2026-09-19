@@ -1,4 +1,4 @@
-package initialzer;
+package base;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class InitTest {
+public class BaseTest {
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
     private static final Properties PROPERTIES = loadProperties();
 
@@ -65,7 +65,7 @@ public class InitTest {
 
     private static Properties loadProperties() {
         Properties properties = new Properties();
-        try (InputStream input = InitTest.class.getClassLoader().getResourceAsStream("_web.properties")) {
+        try (InputStream input = BaseTest.class.getClassLoader().getResourceAsStream("_web.properties")) {
             if (input == null) throw new IllegalStateException("_web.properties was not found");
             properties.load(input);
             return properties;

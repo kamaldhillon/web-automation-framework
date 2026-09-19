@@ -1,7 +1,7 @@
 package tests.business;
-import initialzer.InitTest;
-import pages.ShoppingFlow;
-import pageobjects.shop.*;
+import base.BaseTest;
+import flows.ShoppingFlow;
+import pages.shop.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class ShoppingJourneyTest extends InitTest {
+public class ShoppingJourneyTest extends BaseTest {
     @Test(groups={"smoke","regression"}, description="Customer buys a backpack and verifies checkout totals")
     public void customerCompletesPurchase() {
         CartPage cart = new ShoppingFlow().addBackpackToCart();

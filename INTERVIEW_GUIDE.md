@@ -11,16 +11,18 @@ Existing Amazon and Selenium practice classes remain for reference, excluded fro
 |---|---|---|
 | Build | pom.xml | Pins dependencies, Java 17 compiler, Surefire and suite selection |
 | Execution | suites/business.xml, suites/smoke.xml | Suite membership, groups, two method workers |
-| Lifecycle | initialzer/InitTest | One driver per method, configuration, cleanup |
-| Browser abstractions | initialzer/InitPage | Explicit waits and common browser interactions |
-| Page objects | pageobjects/shop | Stable selectors and screen operations |
-| Business flows | pages/ShoppingFlow | Reusable sign-in and add-to-cart journeys |
+| Lifecycle | base/BaseTest | One driver per method, configuration, cleanup |
+| Browser abstractions | base/BasePage | Explicit waits and common browser interactions |
+| Page objects | pages, pages/shop | Stable selectors and screen operations |
+| Business flows | flows/ShoppingFlow | Reusable sign-in and add-to-cart journeys |
 | Tests | tests/business/ShoppingJourneyTest | Business expectations, independent setup, assertions |
 | Data | missingCustomerFields DataProvider | Three required-field scenarios without duplicated test methods |
 | Reporting | utils/Listeners, ExtentManager | Test results, configuration failures, embedded failure screenshots |
 | CI | Jenkinsfile | Maven execution, JUnit XML publishing, artifact retention |
 
-The historical package spelling 'initialzer' is retained to avoid breaking existing imports.
+The package names intentionally follow the standard `base`, `pages`, `flows`, `tests`, and
+`utils` convention. `BasePage` and `BaseTest` replace the former ambiguous `InitPage` and
+`InitTest` names.
 
 ## Execution flow
 1. mvn clean test resolves dependencies and compiles main/test Java.
@@ -45,7 +47,7 @@ Jenkins runs the Maven command, publishes Surefire XML and retains report artifa
 I avoid global mutable page objects and automatic retries that hide product defects."
 
 ## Read the project in this order
-pom.xml → suites/business.xml → InitTest → InitPage → SignInPage → ShoppingFlow →
+pom.xml → suites/business.xml → BaseTest → BasePage → SignInPage → ShoppingFlow →
 ShoppingJourneyTest → Listeners → ExtentManager → Jenkinsfile.
 
 ## Why these decisions?
@@ -65,12 +67,12 @@ ShoppingJourneyTest → Listeners → ExtentManager → Jenkinsfile.
 | Concept | Implemented location |
 |---|---|
 | CSS/test attributes, WebElement clear/sendKeys/click | ShopPage, SignInPage |
-| Explicit waits | InitPage and destination-page waits |
+| Explicit waits | BasePage and destination-page waits |
 | Select dropdown and collection sorting | CatalogPage, catalogSortsByPrice |
 | findElements and collection assertions | CartPage and cart test |
-| POM and business-flow composition | pageobjects/shop and ShoppingFlow |
+| POM and business-flow composition | pages/shop and ShoppingFlow |
 | DataProvider, groups, hard/soft assertions | ShoppingJourneyTest |
-| ThreadLocal, Before/AfterMethod, finally cleanup | InitTest |
+| ThreadLocal, Before/AfterMethod, finally cleanup | BaseTest |
 | Listeners, setup failures, screenshots, reporting | Listeners |
 | Maven, compiler release, Surefire | pom.xml |
 | CI results and artifact archiving | Jenkinsfile |
@@ -98,7 +100,7 @@ From the project directory, with JDK 17+ and Maven installed:
 
 For IDE execution, choose the business suite and set VM option
 -DbaseUrl=https://www.saucedemo.com/
-(the retained _web.properties uses the old practice-site base for compatibility).
+when overriding the default configuration.
 Import pom.xml into a new IDE project configuration rather than reusing a machine-specific SDK path.
 
 ## Reports
@@ -107,7 +109,7 @@ target/surefire-reports — Maven/TestNG XML and execution reports.
 A missing report usually means build/dependency failure happened before TestNG.
 A skipped test after BeforeMethod failure is not a passing test: read the configuration failure entry.
 
-## Validation status
-XML and archive integrity are checked. Maven was not available in the generation environment.
-No successful compilation or live UI execution is claimed.
-
+## Validation
+Compile the framework with `mvn -q -DskipTests compile`. Run the business suite with
+`mvn clean test -Dheadless=true`; run the optional practice suite with the legacy
+`the-internet.herokuapp.com` base URL shown above.

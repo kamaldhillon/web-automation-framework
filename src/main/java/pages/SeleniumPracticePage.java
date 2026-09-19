@@ -1,21 +1,20 @@
-package pageobjects;
+package pages;
 
-import initialzer.InitPage;
-import initialzer.InitTest;
+import base.BasePage;
+import base.BaseTest;
 import java.nio.file.Path;
 import java.util.List;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class SeleniumPracticePage extends InitPage {
+public class SeleniumPracticePage extends BasePage {
     private final By result = By.id("result");
 
-    public void open(String path) { driver.navigate().to(InitTest.getBaseUrl() + path); }
+    public void open(String path) { driver.navigate().to(BaseTest.getBaseUrl() + path); }
 
     public String login(String username, String password) {
         driver.findElement(By.cssSelector("#username")).sendKeys(username);

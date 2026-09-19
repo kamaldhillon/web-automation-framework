@@ -1,17 +1,20 @@
 # Web Automation Framework
 
-## Business framework entry point
+## Framework entry point
 
-The default Maven suite now runs commerce journeys against Sauce Demo:
-purchase, cart removal, price sorting, required checkout fields, logout and locked-user login.
-See INTERVIEW_GUIDE.md for architecture, execution flow, design tradeoffs, concept mapping
-and a 90-second interview explanation. The practice coverage below is retained as an optional suite.
+The default Maven suite runs commerce journeys against Sauce Demo: purchase, cart removal,
+price sorting, required checkout fields, logout and locked-user login. The framework follows
+a simple layered structure: `base` manages lifecycle and shared browser behavior, `pages`
+contains page objects, `flows` composes business journeys, `tests` owns assertions, and
+`utils` contains reporting and retry support. See `INTERVIEW_GUIDE.md` for the complete
+architecture and interview walkthrough.
 
 Run smoke: `mvn clean test -DsuiteXmlFile=suites/smoke.xml`.
 Run legacy concepts: `mvn clean test -DsuiteXmlFile=testng.xml -DbaseUrl=https://the-internet.herokuapp.com`.
 Failure screenshots in the business report are embedded Base64 for portability.
 
-Java 17 Selenium framework using TestNG, Maven Surefire, Page Objects, Extent Reports, reusable waits, failure screenshots and parallel-safe `ThreadLocal<WebDriver>` sessions.
+Java 17 Selenium framework using TestNG, Maven Surefire, Page Objects, Extent Reports, reusable
+waits, failure screenshots and parallel-safe `ThreadLocal<WebDriver>` sessions.
 
 ## Covered concepts
 

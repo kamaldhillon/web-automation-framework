@@ -1,13 +1,13 @@
 package tests;
 
-import initialzer.InitTest;
+import base.BaseTest;
 import org.testng.annotations.Test;
-import pages.LoginPageFeature;
+import flows.LoginPageFeature;
 import utils.RetryAnalyzer;
 
 import java.io.IOException;
 
-public class LoginPageTest extends InitTest {
+public class LoginPageTest extends BaseTest {
 
     @Test
     public void loginSuccess() throws IOException {

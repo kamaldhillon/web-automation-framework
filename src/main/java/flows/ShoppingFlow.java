@@ -1,5 +1,5 @@
-package pages;
-import pageobjects.shop.*;
+package flows;
+import pages.shop.*;
 /** Business flow orchestrates pages, without assertions or test dependencies. */
 public class ShoppingFlow {
     public CatalogPage signIn() {
@@ -13,8 +13,6 @@ public class ShoppingFlow {
     public CartPage addBackpackToCart() {
         CatalogPage catalog = signIn();
         catalog.addProduct("sauce-labs-backpack");
-        catalog.openCart();
-        return new CartPage();
+        return catalog.openCart();
     }
 }
-

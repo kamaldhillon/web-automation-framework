@@ -1,14 +1,14 @@
 package tests;
 
-import initialzer.InitTest;
+import base.BaseTest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pageobjects.SeleniumPracticePage;
+import pages.SeleniumPracticePage;
 
-public class SeleniumConceptsTest extends InitTest {
+public class SeleniumConceptsTest extends BaseTest {
     @Test(description = "CSS, name and XPath locators plus WebElement operations")
     public void locatorsAndLogin() {
         SeleniumPracticePage page = new SeleniumPracticePage(); page.open("/login");

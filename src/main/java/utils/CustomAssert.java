@@ -6,7 +6,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 
-import static initialzer.InitPage.captureScreenshot;
+import static base.BasePage.captureScreenshot;
 
 public class CustomAssert {
 

@@ -1,21 +1,20 @@
-package pages;
+package flows;
 
-import initialzer.InitPage;
-import pageobjects.LoginPage;
+import pages.AmazonLoginPage;
 
 import java.io.IOException;
 
-public class LoginPageFeature  extends InitPage{
+public class LoginPageFeature {
 
    public void loginSuccess() throws IOException {
-      LoginPage page = new LoginPage();
+      AmazonLoginPage page = new AmazonLoginPage();
       page.goTo();
       page.validateWindowHandles();
       page.navigateSuccess();
    }
 
    public void checkBrokenUrl() throws IOException {
-      LoginPage page = new LoginPage();
+      AmazonLoginPage page = new AmazonLoginPage();
       page.validateBrokenUrl("https://www.amazon.com");
    }
 }
