@@ -1,55 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.example</groupId>
-    <artifactId>webAutomationFramework</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <groupId>com.kamaljit.automation</groupId>
+    <artifactId>automation-framework</artifactId>
+    <version>2.0.0</version>
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <selenium.version>4.34.0</selenium.version>
+        <testng.version>7.11.0</testng.version>
+        <extent.version>5.1.2</extent.version>
+        <surefire.version>3.5.3</surefire.version>
+        <browser>chrome</browser>
+        <headless>false</headless>
+        <suiteXmlFile>suites/business.xml</suiteXmlFile>
+        <baseUrl>https://www.saucedemo.com/</baseUrl>
     </properties>
-
     <dependencies>
-            <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-            <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-java</artifactId>
-                <version>4.21.0</version>
-            </dependency>
-        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>5.0.9</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.16.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.0.2</version> <!-- Check for the latest version -->
-            <scope>compile</scope>
-        </dependency>
+        <dependency><groupId>org.seleniumhq.selenium</groupId><artifactId>selenium-java</artifactId><version>${selenium.version}</version></dependency>
+        <dependency><groupId>com.aventstack</groupId><artifactId>extentreports</artifactId><version>${extent.version}</version></dependency>
+        <dependency><groupId>org.testng</groupId><artifactId>testng</artifactId><version>${testng.version}</version></dependency>
+        <dependency><groupId>commons-io</groupId><artifactId>commons-io</artifactId><version>2.16.1</version></dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>${surefire.version}</version>
+                <configuration>
+                    <suiteXmlFiles><suiteXmlFile>${suiteXmlFile}</suiteXmlFile></suiteXmlFiles>
+                    <systemPropertyVariables><browser>${browser}</browser><headless>${headless}</headless><baseUrl>${baseUrl}</baseUrl></systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

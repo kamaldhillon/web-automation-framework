@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Suite">
-    <listeners>
-        <listener class-name="utils.Listeners"></listener>
-    </listeners>
-
-    <test name ="test">
-        <classes>
-            <class name="tests.LoginPageTest"/>
-        </classes>
-    </test> <!-- Test -->
-</suite> <!-- Suite -->
-
-
+<suite name="Selenium Concept Suite" parallel="methods" thread-count="2">
+    <listeners><listener class-name="utils.Listeners"/></listeners>
+    <test name="Complete Selenium Practice">
+        <classes><class name="tests.SeleniumConceptsTest"/></classes>
+    </test>
+</suite>

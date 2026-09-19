@@ -3,43 +3,41 @@ package utils;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import java.util.HashMap;
-import java.util.Map;
+public final class ExtentManager {
+    private static final ThreadLocal<ExtentTest> TEST = new ThreadLocal<>();
+    private static final ExtentReports EXTENT = createReport();
 
-public class ExtentManager {
+    private ExtentManager() { }
 
-    static Map<Integer, ExtentTest> extentTestMap = new HashMap<>();
-    static ExtentReports extent = getReportObject();
-
-    public synchronized static ExtentReports getReportObject() {
-        if (extent == null) {
-            try {
-                System.out.println("Initializing ExtentReports...");
-                ExtentSparkReporter reporter = new ExtentSparkReporter("./extentreport/report.html");
-
-                System.out.println("Configuring reporter...");
-                reporter.config().setReportName("Test Report");
-                reporter.config().setDocumentTitle("Test Results");
-
-                extent = new ExtentReports();
-                extent.attachReporter(reporter);
-                System.out.println("ExtentReports initialized successfully.");
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Failed to initialize ExtentReports", e);
-            }
-        }
+    private static ExtentReports createReport() {
+        try { Files.createDirectories(Path.of("target", "extent-report")); }
+        catch (IOException exception) { throw new IllegalStateException("Cannot create report directory", exception); }
+        ExtentSparkReporter reporter = new ExtentSparkReporter("target/extent-report/index.html");
+        reporter.config().setReportName("Selenium UI Regression");
+        reporter.config().setDocumentTitle("Automation Results");
+        ExtentReports extent = new ExtentReports();
+        extent.attachReporter(reporter);
+        extent.setSystemInfo("Java", System.getProperty("java.version"));
+        extent.setSystemInfo("OS", System.getProperty("os.name"));
         return extent;
     }
 
-    public static synchronized ExtentTest getTest() {
-        return extentTestMap.get((int) Thread.currentThread().getId());
+    public static ExtentReports getReportObject() { return EXTENT; }
+    public static ExtentTest startTest(String name, String description) {
+        TEST.set(EXTENT.createTest(name, description));
+        return TEST.get();
     }
-
-    public static synchronized ExtentTest startTest(String desc) {
-        ExtentTest test = extent.createTest(desc);
-        extentTestMap.put((int) Thread.currentThread().getId(), test);
+    public static ExtentTest startTest(String name) {
+        return startTest(name, "");
+    }
+    public static ExtentTest getTest() {
+        ExtentTest test = TEST.get();
+        if (test == null) throw new IllegalStateException("Extent test is not initialized");
         return test;
     }
+    public static void unload() { TEST.remove(); }
 }

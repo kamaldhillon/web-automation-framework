@@ -1,38 +1,49 @@
 package utils;
 
-import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import initialzer.InitPage;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class Listeners implements ITestListener {
-    @Override
-    public void onStart(ITestContext context) {
-
-        System.out.println("onStart: " + context.getName());
-    }
-
+public class Listeners implements ITestListener, org.testng.IExecutionListener, org.testng.IConfigurationListener {
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println(result.getMethod() + " test is starting.");
+        ExtentManager.startTest(result.getMethod().getMethodName(), result.getMethod().getDescription());
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println(result.getMethod() + " test has passed.");
-        ExtentManager.getTest().log(Status.PASS, "Test passed");
+        ExtentManager.getTest().pass("Test passed");
+        ExtentManager.unload();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println(result.getMethod() + " test has failed.");
-        ExtentManager.getTest().log(Status.FAIL, "Test Failed");
+        ExtentManager.getTest().fail(result.getThrowable());
+        try {
+            String screenshot = ((org.openqa.selenium.TakesScreenshot) initialzer.InitTest.getWebDriver())
+                    .getScreenshotAs(org.openqa.selenium.OutputType.BASE64);
+            ExtentManager.getTest().fail("Failure screenshot", MediaEntityBuilder.createScreenCaptureFromBase64String(screenshot).build());
+        } catch (Exception exception) {
+            ExtentManager.getTest().warning("Screenshot unavailable: " + exception.getMessage());
+        }
+        ExtentManager.unload();
     }
 
     @Override
-    public void onFinish(ITestContext context) {
-        System.out.println("onFinish: " + context.getName());
-        // Do tear down operations for ExtentReports reporting
-        ExtentManager.getReportObject().flush();
+    public void onTestSkipped(ITestResult result) {
+        ExtentManager.startTest(result.getMethod().getMethodName() + " [skipped]", result.getMethod().getDescription());
+        ExtentManager.getTest().skip(result.getThrowable() == null ? "Skipped by TestNG" : result.getThrowable().toString());
+        ExtentManager.unload();
+    }
+
+    @Override
+    public void onExecutionFinish() { ExtentManager.getReportObject().flush(); }
+
+    @Override
+    public void onConfigurationFailure(ITestResult result) {
+        ExtentManager.getReportObject().createTest("Configuration: " + result.getMethod().getMethodName())
+                .fail(result.getThrowable());
     }
 }

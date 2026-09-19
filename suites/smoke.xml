@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Commerce Smoke">
+ <listeners><listener class-name="utils.Listeners"/></listeners>
+ <test name="Critical purchase"><groups><run><include name="smoke"/></run></groups>
+ <classes><class name="tests.business.ShoppingJourneyTest"/></classes></test>
+</suite>
+
